@@ -81,6 +81,10 @@
 
                     <div class="mb-4">
                         <label for="file_label" class="block text-sm font-medium text-gray-700">첨부파일</label>
+                        <p th:if="${book.bookImage}">
+                        	기존 파일명: <span th:text="${book.bookImage.originalFileName}"></span>
+                        </p>
+                        
                         <input type="file" class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="files" name="files" multiple="multiple"/>
                     </div>
                     

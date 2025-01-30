@@ -5,11 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.kudong.book.dto.BookDto;
+import kr.kudong.book.dto.BookFileDto;
 import kr.kudong.book.service.BookService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,13 +52,30 @@ public class BookController
 		return mv;
 	}
 	
-	//도서 상세 페이지를 엽니다.
+	//도서 상세 페이지를 엽니다. id는 bookId
 	@GetMapping("/book_detail")
 	private ModelAndView openBookDetail(@RequestParam("id") int id)
 	{
 		ModelAndView mv = new ModelAndView("/book/book_detail");
 		BookDto list = service.selectBook(id);
+		List<BookFileDto> dtoList = service.selectBookImage(id);
+
 		mv.addObject("book",list);
+		if(!dtoList.isEmpty()) 
+		{
+			//인덱스 0만 빼고 다 지우기
+			if (dtoList.size() > 1) {
+				dtoList.subList(1, dtoList.size()).clear();
+	        }
+			
+			//http://localhost:8080/image/2025-01-30/sample.jpg
+			BookFileDto dto = dtoList.get(0);	
+			String path = dto.getStoredFilePath().substring(18, dto.getStoredFilePath().length());
+			dto.setOriginalFileName(path);
+			path = "http://localhost:8080/image/" + path;
+			dto.setStoredFilePath(path);
+		}
+		mv.addObject("bookImg",dtoList);
 		return mv;
 	}
 	
@@ -85,17 +105,17 @@ public class BookController
 
 	//Form 요청으로 들어온것을 처리
 	@PostMapping("/updateBook.do")
-	private String updateBook(BookDto dto)
+	private String updateBook(BookDto dto, MultipartHttpServletRequest request) throws Exception
 	{
-		this.service.updateBook(dto);
+		this.service.updateBook(dto, request);
 		return "redirect:/book_detail?id="+dto.getBookId();
 	}
 
 	//Form 요청으로 들어온것을 처리
 	@PostMapping("/createBook.do")
-	private String createBook(BookDto dto)
+	private String createBook(BookDto dto,MultipartHttpServletRequest request) throws Exception
 	{
-		this.service.createBook(dto);
+		this.service.createBook(dto,request);
 		return "redirect:/book_search";
 	}
 
@@ -105,4 +125,6 @@ public class BookController
 		ModelAndView mv = new ModelAndView("/book/book_test");
 		return mv;
 	}
+	
+	
 }

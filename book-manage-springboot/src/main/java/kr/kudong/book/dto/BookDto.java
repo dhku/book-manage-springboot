@@ -1,5 +1,7 @@
 package kr.kudong.book.dto;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -15,4 +17,6 @@ public class BookDto
 	private String description;
 	private String createdAt;
 	private String updatedAt;
+	
+	private BookFileDto bookImage;
 }

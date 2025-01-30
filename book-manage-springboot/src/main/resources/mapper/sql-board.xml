@@ -52,5 +52,24 @@
     	insert into Books(title,author,publisher,published_date,genres,isbn,description,created_at,updated_at)
 		values (#{title},#{author},#{publisher},#{publishedDate},#{genres},#{isbn},#{description},now(),now())
     </insert>
+    <insert id="insertBookFileList" parameterType="kr.kudong.book.dto.BookFileDto">
+    	insert into bookimages(book_id,image_url,created_at)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.bookId},#{item.storedFilePath},now())
+		</foreach>
+    </insert>
+    
+    <select id="selectBookFileList" parameterType="int" resultType="kr.kudong.book.dto.BookFileDto">
+    	select image_id as idx, book_id, image_url as storedFilePath
+    	from bookimages
+    	where book_id = #{bookId}
+    </select>
+    
+    <delete id="removeBookFileList" parameterType="int">
+        delete from bookimages
+        where book_id = #{bookId} 
+    </delete>
+    
 </mapper>
 
