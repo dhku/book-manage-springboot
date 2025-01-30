@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>도서 수정</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+</head>
+<body>
+
+    <div th:insert="/book/book_layout::body"></div>
+
+    <div class="p-4 sm:ml-64 text-lg bg-gray-50 h-screen">
+        <div class=" mt-14 bg-white  rounded-lg shadow-lg max-w-6xl ">
+            <div class="p-1">
+                <h2 class="text-3xl font-semibold mb-4 mt-4 ml-5 text-left">도서 수정</h2>
+            </div>
+            <form class="flex" action="/updateBook.do" method="POST" enctype="multipart/form-data">
+                <div class="p-5 flex-grow-2 max-w-2xl">
+                    
+                      <input type="hidden" th:value="${book.bookId}" id="bookId" name="bookId">
+                    
+                      <!-- 도서 제목 입력 -->
+                      <div class="mb-4 ">
+                        <label for="title" class="block text-sm font-medium text-gray-700">도서 제목</label>
+                        <input type="text" th:value="${book.title}" id="title" name="title" class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                      </div>
+                      
+                      <!-- 저자 입력 -->
+                      <div class="mb-4">
+                        <label for="author" class="block text-sm font-medium text-gray-700">저자</label>
+                        <input type="text" th:value="${book.author}" id="author" name="author" class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                      </div>
+
+                    <!-- 출판사 입력 -->
+                    <div class="mb-4">
+                        <label for="publisher" class="block text-sm font-medium text-gray-700">출판사</label>
+                        <input type="text" th:value="${book.publisher}" id="publisher" name="publisher" class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                      
+                      <!-- 출판일 입력 -->
+                      <div class="mb-4">
+                        <label for="publishedDate" class="block text-sm font-medium text-gray-700">출판일</label>
+                        <input type="date" th:value="${book.publishedDate}" id="publishedDate" name="publishedDate" class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                      </div>
+                      
+                      <!-- 장르 입력 -->
+                      <div class="mb-4">
+                        <label for="genres" class="block text-sm font-medium text-gray-700">장르</label>
+                        <select id="genres"  name="genres" class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                          <option value="">-- 선택 --</option>
+                          <option value="역사/문화" th:selected="${book.genres == '역사/문화'}">역사/문화</option>
+                          <option value="정치/사회" th:selected="${book.genres == '정치/사회'}">정치/사회</option>
+                          <option value="종교" th:selected="${book.genres == '종교'}">종교</option>
+                          <option value="인문" th:selected="${book.genres == '인문'}">인문</option>
+                          <option value="소설" th:selected="${book.genres == '소설'}">소설</option>
+                          <option value="과학" th:selected="${book.genres == '과학'}">과학</option>
+                          <option value="기술/공학" th:selected="${book.genres == '기술/공학'}">기술/공학</option>
+                          <option value="외국어" th:selected="${book.genres == '외국어'}">외국어</option>
+                          <option value="컴퓨터/IT" th:selected="${book.genres == '컴퓨터/IT'}">컴퓨터/IT</option>
+                          <option value="수학" th:selected="${book.genres == '수학'}">수학</option>
+                        </select>
+                      </div>
+                      
+                </div>
+    
+                <div class="p-5 flex-grow-1">
+
+                    <!-- ISBN 입력 -->
+                    <div class="mb-4">
+                        <label for="isbn" class="block text-sm font-medium text-gray-700">ISBN 번호</label>
+                        <input type="text" th:value="${book.isbn}" id="isbn" name="isbn" class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+
+                    <!-- 도서 설명 입력 -->
+                    <div class="mb-6">
+                    <label for="description" class="block text-sm font-medium text-gray-700">도서 설명</label>
+                    <textarea id="description" th:text="${book.description}" name="description" rows="4" class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="도서에 대한 간단한 설명을 작성하세요." required></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="file_label" class="block text-sm font-medium text-gray-700">첨부파일</label>
+                        <input type="file" class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="files" name="files" multiple="multiple"/>
+                    </div>
+                    
+                    
+                    <div class="flex justify-center">
+		            	<a th:href="@{/book_search}" class="mt-6 mb-3 bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+		                    목록으로
+		                </a>
+	                    <button type="submit" class="ml-3 mt-6 mb-3 bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+	                        도서 수정
+	                    </button>
+                    </div>
+
+                    
+    
+                </div>
+                    
+            </form>
+
+
+            </div>
+
+            
+
+
+        
+    </div>
+
+   
+      
+</body>
+</html>
