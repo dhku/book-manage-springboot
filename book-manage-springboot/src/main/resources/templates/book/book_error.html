@@ -9,17 +9,17 @@
 </head>
 <body>
 
-    <div th:replace="~{layout :: body}"></div>
+    <div th:insert="/book/book_layout::body"></div>
 
 	<div class="p-4 sm:ml-64 text-lg">
 	    <div class="p-4 mt-14">
-	    	<h1>공통 에러 페이지</h1>
+	    	<h1 class="text-4xl font-bold mb-3">에러가 발생하였습니다!</h1>
 		    <div class="error-details">
 		        <p><strong>요청 URL:</strong> <span th:text="${request.getRequestURI()}"></span></p>
 		        <p><strong>오류 메시지:</strong> <span th:text="${message}"></span></p>
 		
-		        <h2>오류 상세 내용</h2>
-		        <button class="toggle-button" onclick="toggleDetails()">보기</button>
+		        <h2 class="mt-3 text-1xl font-bold">오류 상세 내용</h2>
+		        <button class="mt-2 toggle-button border" onclick="toggleDetails()">보기</button>
 		        <ul id="error-details-list" class="hidden">
 		            <li th:each="line : ${stackTrace}" th:text="${line.toString()}"></li>
 		        </ul>
