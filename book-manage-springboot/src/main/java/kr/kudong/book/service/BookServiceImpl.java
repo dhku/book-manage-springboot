@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@Transactional
 public class BookServiceImpl implements BookService
 {
 	@Autowired
@@ -51,13 +53,13 @@ public class BookServiceImpl implements BookService
 	public void updateBook(BookDto dto,MultipartHttpServletRequest request)
 	{
 		this.mapper.updateBook(dto);
-		this.mapper.removeBookFileList(dto.getBookId());
-		
+
 		try
 		{
 			//첨부파일을 디스크에 저장하고, 첨부파일 정보를 반환
 			List<BookFileDto> fileInfoList = fileUtils.parseFileInfo(dto.getBookId(), request);
 			if(!CollectionUtils.isEmpty(fileInfoList)) {
+				this.mapper.removeBookFileList(dto.getBookId());
 				this.mapper.insertBookFileList(fileInfoList);
 			}
 		}
