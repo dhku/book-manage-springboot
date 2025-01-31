@@ -1,10 +1,12 @@
 # Book-Manage-Springboot
 
+![title](./book-manage-springboot/img/main.png)
 
+SpringBoot를 이용한 도서 관리 웹 프로젝트 입니다.
 
+제작기간 (24/01/24 - 24/01/31)
 
-
-
+## Database DDL/DML 
 
 ```sql
 CREATE TABLE Books (
@@ -53,10 +55,6 @@ insert into Books (title,author,publisher,published_date,genres,isbn,description
 
 insert into Books (title,author,publisher,published_date,genres,isbn,description) values 
 ("존중받지 못하는 자들을 위한 정치학","프랜시스 후쿠야마", "한국경제신문" , "2020-04-20" , "정치/사회" , "9788947545815", "존엄에 대한 요구와 분노의 정치에 대하여" );
-
-
-
-
 
 ```
 
