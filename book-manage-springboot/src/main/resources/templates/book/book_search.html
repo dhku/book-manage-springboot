@@ -20,6 +20,8 @@
                 </svg>
                 <input type="name" name="keyword" class=" h-12 w-full border-b-gray-400 bg-transparent py-4 pl-12 text-sm outline-none focus:border-b-2" placeholder="도서 제목으로 검색" />
             </form>
+            
+            
 
 	            <button id="bookDelete" type="button" class=" inline-flex ml-auto mr-0 cursor-pointer items-center rounded-full border border-gray-200 bg-white px-5 py-2 text-center text-sm font-medium text-gray-800 hover:bg-gray-100 focus:shadow">
 	                <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
@@ -38,6 +40,7 @@
 
         <div class="mt-3 bg-gray-100 p-4 text-lg">
             <table class="ml-0 mr-auto w-full">
+            	<p class="ml-2 text-sm mt-auto" th:text="|총 ${#lists.size(bookList)}개의 도서가 조회되었습니다.|"></p>
                 <thead class="hidden border-b lg:table-header-group">
                   <tr class="">
 
