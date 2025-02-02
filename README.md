@@ -6,9 +6,26 @@ SpringBoot를 이용한 도서 관리 웹 프로젝트 입니다.
 
 제작기간 (24/01/24 - 24/01/31)
 
-## Database DDL/DML 
+## 특징
+
+* 도서 등록/조회/수정/삭제에 대한 기본적인 CRUD 제공
+* 특정 도서에 대한 상세보기와 검색 기능 제공
+* 체크박스를 이용한 도서 일괄 관리 기능 제공
+* REST API와 Multipart를 이용한 도서 이미지 첨부 기능 제공
+* HikariCP와 Mybatis를 이용한 데이터베이스 연동
+
+## 기술 스택
+
+* Spring Boot
+* Mybatis (DB - MariaDB)
+* Thymeleaf
+* Tailwind CSS
+
+## 데이터베이스 기본 설정
 
 ```sql
+CREATE DATABASE springbootdb; -- 먼저 springbootdb 데이터베이스를 생성한 후 그안에 테이블을 생성하세요
+
 CREATE TABLE Books (
     book_id BIGINT AUTO_INCREMENT PRIMARY KEY, -- 고유 식별자
     title VARCHAR(255) NOT NULL,               -- 도서 제목
@@ -57,4 +74,12 @@ insert into Books (title,author,publisher,published_date,genres,isbn,description
 ("존중받지 못하는 자들을 위한 정치학","프랜시스 후쿠야마", "한국경제신문" , "2020-04-20" , "정치/사회" , "9788947545815", "존엄에 대한 요구와 분노의 정치에 대하여" );
 
 ```
+
+## 스크린샷
+
+![title](./book-manage-springboot/img/detail.png)
+
+![title](./book-manage-springboot/img/update.png)
+
+![title](./book-manage-springboot/img/create.png)
 
