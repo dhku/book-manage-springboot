@@ -54,10 +54,13 @@ public class BookServiceImpl implements BookService
 	{
 		try
 		{
-			//첨부파일을 디스크에 저장하고, 첨부파일 정보를 반환
-			List<BookFileEntity> fileInfoList = fileUtils.parseFileInfo(bookEntity.getBookId(), request);
-			if(!CollectionUtils.isEmpty(fileInfoList)) {
-				bookEntity.setBookImage(fileInfoList);
+			if(request != null)
+			{
+				//첨부파일을 디스크에 저장하고, 첨부파일 정보를 반환
+				List<BookFileEntity> fileInfoList = fileUtils.parseFileInfo(bookEntity.getBookId(), request);
+				if(!CollectionUtils.isEmpty(fileInfoList)) {
+					bookEntity.setBookImage(fileInfoList);
+				}
 			}
 		}
 		catch(Exception e)
