@@ -26,7 +26,7 @@ SpringBoot를 이용한 도서 관리 웹 프로젝트 입니다.
 
 * Spring Boot
 
-* Mybatis (DB - MariaDB)
+* Spring JPA (DB - MariaDB)
 
 * Thymeleaf
 
