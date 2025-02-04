@@ -2,24 +2,21 @@ package kr.kudong.book.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import kr.kudong.book.dto.BookDto;
-import kr.kudong.book.dto.BookFileDto;
-import kr.kudong.book.mapper.BookMapper;
+import kr.kudong.book.entity.BookEntity;
+import kr.kudong.book.entity.BookFileEntity;
 
 
 public interface BookService
 {
-	public List<BookDto> selectAllBook();
-	public List<BookDto> selectBookByKeyword(String search);
-	public void removeBook(int num);
-	public BookDto selectBook(int id);
-	public void updateBook(BookDto dto, MultipartHttpServletRequest request);
-	public void createBook(BookDto dto, MultipartHttpServletRequest request);
+	public List<BookEntity> selectAllBook();
+	public List<BookEntity> selectBookByKeyword(String search);
+	public void deleteBook(int num);
+	public BookEntity selectBook(int id);
+	public void updateBook(BookEntity dto, MultipartHttpServletRequest request);
+	public void createBook(BookEntity dto, MultipartHttpServletRequest request);
 	
-	public List<BookFileDto> selectBookImage(int bookId);
-	public void removeBookImage(int bookId);
+	public List<BookFileEntity> selectBookImage(int bookId);
+	public void deleteBookImage(int bookId);
 }

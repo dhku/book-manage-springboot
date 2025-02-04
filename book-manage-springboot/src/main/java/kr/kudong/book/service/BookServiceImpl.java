@@ -9,9 +9,9 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.kudong.book.common.FileUtils;
-import kr.kudong.book.dto.BookDto;
-import kr.kudong.book.dto.BookFileDto;
-import kr.kudong.book.mapper.BookMapper;
+import kr.kudong.book.entity.BookEntity;
+import kr.kudong.book.entity.BookFileEntity;
+import kr.kudong.book.repository.BookRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -20,83 +20,87 @@ import lombok.extern.slf4j.Slf4j;
 public class BookServiceImpl implements BookService
 {
 	@Autowired
-	private BookMapper mapper;
-	
+	private BookRepository bookRepository;
+
 	@Autowired
 	private FileUtils fileUtils;
 	
 	@Override
-	public List<BookDto> selectAllBook()
+	public List<BookEntity> selectAllBook()
 	{
-		return this.mapper.selectBookList();
+		return this.bookRepository.findAllByOrderByBookId();
 	}
 	
 	@Override
-	public List<BookDto> selectBookByKeyword(String search)
+	public List<BookEntity> selectBookByKeyword(String search)
 	{
-		return this.mapper.selectBookListByKeyword(search);
+		return this.bookRepository.findByTitleLike(search);
 	}
 	
 	@Override
-	public void removeBook(int num)
+	public void deleteBook(int id)
 	{
-		this.mapper.removeBook(num);
+		this.bookRepository.deleteById(id);
 	}
 	
 	@Override
-	public BookDto selectBook(int id)
+	public BookEntity selectBook(int id)
 	{
-		return this.mapper.selectBook(id);
+		return this.bookRepository.findById(id).orElse(null);
 	}
 
 	@Override
-	public void updateBook(BookDto dto,MultipartHttpServletRequest request)
+	public void updateBook(BookEntity bookEntity,MultipartHttpServletRequest request)
 	{
-		this.mapper.updateBook(dto);
-
 		try
 		{
 			//첨부파일을 디스크에 저장하고, 첨부파일 정보를 반환
-			List<BookFileDto> fileInfoList = fileUtils.parseFileInfo(dto.getBookId(), request);
+			List<BookFileEntity> fileInfoList = fileUtils.parseFileInfo(bookEntity.getBookId(), request);
 			if(!CollectionUtils.isEmpty(fileInfoList)) {
-				this.mapper.removeBookFileList(dto.getBookId());
-				this.mapper.insertBookFileList(fileInfoList);
+				bookEntity.setBookImage(fileInfoList);
 			}
 		}
 		catch(Exception e)
 		{
 			log.error(e.getMessage());
 		}
-	}
-
-	@Override
-	public void createBook(BookDto dto,MultipartHttpServletRequest request)
-	{
-		this.mapper.insertBook(dto);
 		
+		this.bookRepository.save(bookEntity);
+	}
+
+	@Override
+	public void createBook(BookEntity bookEntity,MultipartHttpServletRequest request)
+	{
 		try
 		{
 			//첨부파일을 디스크에 저장하고, 첨부파일 정보를 반환
-			List<BookFileDto> fileInfoList = fileUtils.parseFileInfo(dto.getBookId(), request);
+			List<BookFileEntity> fileInfoList = fileUtils.parseFileInfo(bookEntity.getBookId(), request);
 			if(!CollectionUtils.isEmpty(fileInfoList)) {
-				this.mapper.insertBookFileList(fileInfoList);
+				bookEntity.setBookImage(fileInfoList);
 			}
 		}
 		catch(Exception e)
 		{
 			log.error(e.getMessage());
 		}
+		
+		this.bookRepository.save(bookEntity);
 	}
 
 	@Override
-	public List<BookFileDto> selectBookImage(int bookId)
+	public List<BookFileEntity> selectBookImage(int bookId)
 	{
-		return this.mapper.selectBookFileList(bookId);
+		return this.bookRepository.findBookFile(bookId);
 	}
 
 	@Override
-	public void removeBookImage(int bookId)
+	public void deleteBookImage(int bookId)
 	{
-		this.mapper.removeBookFileList(bookId);
+		BookEntity e = this.selectBook(bookId);
+		if(e != null)
+		{
+			e.getBookImage().clear();
+			this.bookRepository.save(e);
+		}
 	}
 }

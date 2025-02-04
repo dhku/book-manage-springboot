@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class BookImgController
+public class BookRestAPIController
 {
     @GetMapping("/image/{day}/{filename}")
     public ResponseEntity<Resource> getImage(@PathVariable("day") String day, @PathVariable("filename") String filename) throws MalformedURLException {
@@ -29,4 +29,5 @@ public class BookImgController
             return ResponseEntity.notFound().build();
         }
     }
+
 }

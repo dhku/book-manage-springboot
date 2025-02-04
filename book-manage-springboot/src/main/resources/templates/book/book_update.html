@@ -16,9 +16,9 @@
             <div class="p-1">
                 <h2 class="text-3xl font-semibold mb-4 mt-4 ml-5 text-left">도서 수정</h2>
             </div>
-            <form class="flex" action="/updateBook.do" method="POST" enctype="multipart/form-data">
+            <form class="flex" id="updateFrm" action="/updateBook.do" method="POST" enctype="multipart/form-data">
                 <div class="p-5 flex-grow-2 max-w-2xl">
-                    
+                      <input type="hidden" id="method_update" name="_method" />
                       <input type="hidden" th:value="${book.bookId}" id="bookId" name="bookId">
                     
                       <!-- 도서 제목 입력 -->
@@ -81,8 +81,8 @@
 
                     <div class="mb-4">
                         <label for="file_label" class="block text-sm font-medium text-gray-700">첨부파일</label>
-                        <p th:if="${book.bookImage}">
-                        	기존 파일명: <span th:text="${book.bookImage.originalFileName}"></span>
+                        <p th:if="${bookImage}">
+                        	기존 파일명: <span th:text="${bookImage}"></span>
                         </p>
                         
                         <input type="file" class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="files" name="files" multiple="multiple"/>
@@ -93,7 +93,7 @@
 		            	<a th:href="@{/book_search}" class="mt-6 mb-3 bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
 		                    목록으로
 		                </a>
-	                    <button type="submit" class="ml-3 mt-6 mb-3 bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+	                    <button id="uptbtn" type="submit" class="ml-3 mt-6 mb-3 bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
 	                        도서 수정
 	                    </button>
                     </div>
@@ -104,14 +104,22 @@
                     
             </form>
 
-
             </div>
-
-            
-
-
-        
+ 
     </div>
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $(function() {
+        	const bookId = $("#bookId").val();
+			$("#uptbtn").on("click", function() {
+				$("#method_update").val("PUT");
+				let frm = $("#updateFrm")[0];
+                frm.action = "/book/detail/" + bookId;
+                frm.submit();
+			});
+        });
+    </script>
 
    
       

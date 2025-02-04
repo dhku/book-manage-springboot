@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.kudong.book.dto.BookFileDto;
+import kr.kudong.book.entity.BookFileEntity;
 
 @Component
 public class FileUtils {
@@ -23,12 +24,12 @@ public class FileUtils {
     private String uploadDir;
     
     // 요청을 통해서 전달받은 파일을 저장하고, 파일 정보를 반환하는 메서드 
-    public List<BookFileDto> parseFileInfo(int bookId, MultipartHttpServletRequest request) throws Exception {
+    public List<BookFileEntity> parseFileInfo(int bookId, MultipartHttpServletRequest request) throws Exception {
         if (ObjectUtils.isEmpty(request)) {
             return null;
         }
         
-        List<BookFileDto> fileInfoList = new ArrayList<>();
+        List<BookFileEntity> fileInfoList = new ArrayList<>();
         
         // 파일을 저장할 디렉터리를 설정
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -69,8 +70,7 @@ public class FileUtils {
                     String storedFilePath = storedDir + "\\" + storedFileName;
                     
                     // 파일 정보를 리스트에 저장 
-                    BookFileDto dto = new BookFileDto();
-                    dto.setBookId(bookId);
+                    BookFileEntity dto = new BookFileEntity();
                     dto.setFileSize(Long.toString(file.getSize()));
                     dto.setOriginalFileName(file.getOriginalFilename());
                     dto.setStoredFilePath(storedFilePath);
